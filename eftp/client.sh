@@ -1,5 +1,8 @@
 #!/bin/bash
 
+IP=`ip a | grep inet | grep np0s3 | cut -d " " -f 6 | cut -d "/" -f 1`
+echo $IP
+
 SERVER="localhost"
 echo "Cliente de EFTP"
 
