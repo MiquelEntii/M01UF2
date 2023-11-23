@@ -33,3 +33,33 @@ echo "(6) Listen"
 DATA=`nc -l -p 3333 -w 0`
 
 echo $DATA
+
+echo "(9) Test"
+
+if [ "$DATA" != "OK_HANDSHAKE" ]
+then
+	sleep 1
+	echo "ERROR 3: BAD HANDSHAKE"
+	exit 3
+fi
+
+echo "(10) Send"
+
+sleep 1
+echo "FILE_NAME fary1.txt" | nc $SERVER 3333
+
+echo "(11) Listen"
+DATA=`nc -l -p 3333 -w 0`
+
+echo $DATA
+
+echo "(14) Send"
+
+if [ "$DATA" != "OK_FILE_NAME" ]
+then
+	echo "ERROR 4: BAD FILE NAME PREFIX"
+	exit 4
+fi
+
+sleep 1
+cat fary1.txt | nc $SERVER 333
