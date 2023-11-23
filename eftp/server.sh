@@ -66,5 +66,20 @@ echo "(13) Listen"
 
 DATA=`nc -l -p 3333 -w 0`
 
-echo $DATA
-echo $DATA >> /home/enti/M01UF2/eftp/inbox
+echo "(16)Store & Send"
+if [ "$DATA" == "" ]
+then
+	echo "ERROR 5: ARCHIVO VACIO"
+	sleep 1
+	echo "KO_DATA" | nc $CLIENT 3333
+	exit 5
+fi
+
+echo $DATA > inbox/$FILE_NAME
+
+sleep 1
+echo "OK_DATA" | nc $CLIENT 3333
+
+echo "FIN"
+
+exit 0

@@ -53,7 +53,7 @@ DATA=`nc -l -p 3333 -w 0`
 
 echo $DATA
 
-echo "(14) Send"
+echo "(14) Test$Send"
 
 if [ "$DATA" != "OK_FILE_NAME" ]
 then
@@ -62,4 +62,18 @@ then
 fi
 
 sleep 1
-cat fary1.txt | nc $SERVER 333
+cat imgs/fary1.txt | nc $SERVER 3333
+
+echo "(15) Listen"
+
+DATA=`nc -l -p 3333 -w 0`
+
+if [ "$DATA" != "OK_DATA" ]
+then
+	echo "ERROR 6: EMPTY DATA"
+	exit 6
+fi
+
+echo "FIN"
+exit 0
+
