@@ -3,6 +3,7 @@
 IP=`ip a | grep inet | grep np0s3 | cut -d " " -f 6 | cut -d "/" -f 1`
 echo $IP
 
+TIMEOUT=1
 SERVER="localhost"
 echo "Cliente de EFTP"
 
@@ -30,7 +31,7 @@ echo "BOOOM" | nc $SERVER 3333
 
 echo "(6) Listen"
 
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo $DATA
 
@@ -49,7 +50,7 @@ sleep 1
 echo "FILE_NAME fary1.txt" | nc $SERVER 3333
 
 echo "(11) Listen"
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo $DATA
 
@@ -66,7 +67,7 @@ cat imgs/fary1.txt | nc $SERVER 3333
 
 echo "(15) Listen"
 
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 if [ "$DATA" != "OK_DATA" ]
 then

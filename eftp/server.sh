@@ -1,10 +1,11 @@
 #!/bin/bash
 
 CLIENT="10.65.0.79"
+TIMEOUT=1
 echo "Servidor de EFTP"
 
 echo "(0) Listen"
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 echo $DATA
 
 echo "(3) Test & Send"
@@ -23,7 +24,7 @@ echo "OK_HEADER" | nc $CLIENT 3333
 
 echo "(4) Listen"
 
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo $DATA
 
@@ -41,7 +42,7 @@ echo "OK_HANDSHAKE" | nc $CLIENT 3333
 
 echo "(8) Listen"
 
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo $DATA
 
@@ -64,7 +65,7 @@ FILE_NAME=`echo $DATA | cut -d " " -f 2`
 
 echo "(13) Listen"
 
-DATA=`nc -l -p 3333 -w 0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo "(16)Store & Send"
 if [ "$DATA" == "" ]
