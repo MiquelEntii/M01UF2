@@ -78,6 +78,17 @@ then
 	exit 6
 fi
 
+echo "(18) Send"
+
+HASH=`cat imgs/fary1.txt | md5sum | cut -d " " -f 1`
+
+
+sleep 1
+echo "FILE_MD5 $HASH" | nc $SERVER 3333
+
+echo $HASH
+
+
 echo "FIN"
 exit 0
 

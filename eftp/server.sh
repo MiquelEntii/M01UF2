@@ -82,10 +82,12 @@ fi
 
 echo "(13) Listen"
 
-DATA=`nc -l -p 3333 -w $TIMEOUT`
+`nc -l -p 3333 -w $TIMEOUT > inbox/$FILE_NAME`
 
 echo "(16)Store & Send"
-if [ "$DATA" == "" ]
+
+DATA=`cat inbox/$FILE_NAME`
+if [ "$DATA"  == "" ]
 then
 	echo "ERROR 5: ARCHIVO VACIO"
 	sleep 1
@@ -93,12 +95,16 @@ then
 	exit 5
 fi
 
-echo $DATA > inbox/$FILE_NAME
 
 sleep 1
 echo "OK_DATA" | nc $CLIENT 3333
 
+echo "(17) Listen"
+
+DATA=`nc -l -p 3333 -w $TIMEOUT | cut -d " " -f 2`
+
+echo $DATA 
+
 echo "FIN"
 
 exit 
-MD5=`echo $MD5 | cut -d " " -f 1`0
