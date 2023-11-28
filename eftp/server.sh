@@ -101,9 +101,33 @@ echo "OK_DATA" | nc $CLIENT 3333
 
 echo "(17) Listen"
 
-DATA=`nc -l -p 3333 -w $TIMEOUT | cut -d " " -f 2`
+DATAPREF=`nc -l -p 3333 -w $TIMEOUT | cut -d " " -f 1`
+HASH=`nc -l -p 3333 -w $TIMEOUT | cut -d " " -f 2`
 
 echo $DATA 
+
+echo "(20) Test&Send"
+
+if [ "$DATAPREF" != "FILE_MD5" ]
+then
+	echo "ERROR 6: BAD PREFIX"
+	sleep 1
+	echo "KO_PREFIX" | nc $CLIENT 3333
+	exit 5
+fi
+
+HASH1=`cat inbox/fary1.txt | md5sum | cut -d " " -f 1`
+
+if [ "$HASH" != "$HASH1" ]
+then
+	echo "ERROR 7: WRONG HASH"
+	sleep 1
+	echo "KO_HASH" | nc $CLIENT 3333
+	exit 7
+fi
+
+
+
 
 echo "FIN"
 

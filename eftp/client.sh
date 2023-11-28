@@ -88,6 +88,10 @@ echo "FILE_MD5 $HASH" | nc $SERVER 3333
 
 echo $HASH
 
+echo "(19) Listen"
+
+DATA=`nc -l -p 3333 -w $TIMEOUT`
+
 
 echo "FIN"
 exit 0
