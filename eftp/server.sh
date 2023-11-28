@@ -100,4 +100,5 @@ echo "OK_DATA" | nc $CLIENT 3333
 
 echo "FIN"
 
-exit 0
+exit 
+MD5=`echo $MD5 | cut -d " " -f 1`0
