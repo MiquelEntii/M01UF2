@@ -12,7 +12,7 @@ echo "EFTP 1.0" | nc $SERVER 3333
 
 echo "(2) Listen"
 
-DATA=`nc -l -p 3333 -w -0`
+DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo $DATA
 
@@ -46,15 +46,18 @@ fi
 
 echo "(10) Send"
 
+
+MD5=`echo fary1.txt | md5sum | cut -d " " -f 1`
+NOMBRE="FILE_NAME fary1.txt $MD5"
 sleep 1
-echo "FILE_NAME fary1.txt" | nc $SERVER 3333
+echo "$NOMBRE" | nc $SERVER 3333
 
 echo "(11) Listen"
 DATA=`nc -l -p 3333 -w $TIMEOUT`
 
 echo $DATA
 
-echo "(14) Test$Send"
+echo "(14) Test&Send"
 
 if [ "$DATA" != "OK_FILE_NAME" ]
 then

@@ -63,6 +63,23 @@ echo "OK_FILE_NAME" | nc $CLIENT 3333
 
 FILE_NAME=`echo $DATA | cut -d " " -f 2`
 
+MD5=`echo fary1.txt | md5sum`
+MD5=`echo $MD5 | cut -d " " -f 1`
+MD5C=`echo $DATA | cut -d " " -f 3`
+
+echo $MD5
+echo $MD5C
+
+
+if [ "$MD5" != "$MD5C" ]
+then
+	echo "ERROR 5: Archivo corrupto"
+	sleep 1
+	echo "Archivo corrupto" | nc $CLIENT 3333
+	exit 5
+fi
+
+
 echo "(13) Listen"
 
 DATA=`nc -l -p 3333 -w $TIMEOUT`
