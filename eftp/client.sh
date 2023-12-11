@@ -44,11 +44,38 @@ then
 	exit 3
 fi
 
-echo "(10) Send"
+
+echo "(9a) Send Num_Files"
+
+NUM_FILES=`ls imgs/ | wc -l`
 
 
-MD5=`echo fary1.txt | md5sum | cut -d " " -f 1`
-NOMBRE="FILE_NAME fary1.txt $MD5"
+sleep 1
+echo "NUM_FILES $NUM_FILES" | nc $SERVER 3333
+
+echo "(9b) Listen OK/KO"
+
+DATA=`nc -l -p 3333 -w $TIMEOUT`
+
+if [ "$DATA" != "OK_FILE_NUM" ]
+then
+	echo "ERROR KO_FILE_NAME"
+	exit 3
+fi
+
+echo "(10a) Loop Num"
+
+for FILE_NAME in `ls imgs/`
+do
+
+
+
+echo "(10b) Send File Name"
+
+#FILE_NAME="far1.txt"
+
+MD5=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
+NOMBRE="FILE_NAME $FILE_NAME $MD5"
 sleep 1
 echo "$NOMBRE" | nc $SERVER 3333
 
@@ -66,7 +93,7 @@ then
 fi
 
 sleep 1
-cat imgs/fary1.txt | nc $SERVER 3333
+cat imgs/$FILE_NAME | nc $SERVER 3333
 
 echo "(15) Listen"
 
@@ -80,7 +107,7 @@ fi
 
 echo "(18) Send"
 
-HASH=`cat imgs/fary1.txt | md5sum | cut -d " " -f 1`
+HASH=`cat imgs/$FILE_NAME | md5sum | cut -d " " -f 1`
 
 
 sleep 1
@@ -92,7 +119,15 @@ echo "(19) Listen"
 
 DATA=`nc -l -p 3333 -w $TIMEOUT`
 
+echo "(21) Test"
+
+if [ "$DATA" != "OK_HASH" ]
+then
+	echo "ERROR: BAD HASH"
+	exit 5
+fi
+
+done
 
 echo "FIN"
 exit 0
-
